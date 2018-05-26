@@ -64,13 +64,8 @@ class Deck {
     let m = array.length,
       t,
       i;
-
-    // While there remain elements to shuffle…
     while (m) {
-      // Pick a remaining element…
       i = Math.floor(Math.random() * m--);
-
-      // And swap it with the current element.
       t = array[m];
       array[m] = array[i];
       array[i] = t;
@@ -78,9 +73,56 @@ class Deck {
     this.cards = array;
     return array;
   }
+
+  deal() {
+    return this.cards.pop();
+  }
+}
+
+class Player {
+  constructor(name) {
+    this.name = name;
+    this.hand = [];
+  }
+  draw(deck) {
+    this.hand.push(deck.deal());
+  }
+  inital(deck) {
+    this.draw(deck);
+    this.draw(deck);
+  }
+  hit(deck) {
+    this.draw(deck);
+  }
+  show() {
+    return this.hand;
+  }
+  toValue() {
+    let total = 0;
+    for (let card of this.hand) {
+      if (Array.isArray(card.toValue())) {
+        if (total === 0) {
+          if (this.hand.length === 2) {
+            return [this.hand[1].toValue() + 11, this.hand[1].toValue() + 1];
+          }
+        } else {
+          if (total + 11 <= 21) {
+            return [total + 11, total + 1];
+          } else {
+            return (total += 1);
+          }
+        }
+      } else {
+        total += card.toValue();
+      }
+    }
+    return total;
+  }
 }
 
 let deck = new Deck();
-console.log(deck.show());
 deck.shuffle();
-console.log(deck.show());
+let player = new Player('grant');
+player.inital(deck);
+console.log(player.show());
+console.log(player.toValue());
