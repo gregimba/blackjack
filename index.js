@@ -102,9 +102,7 @@ class Player {
     for (let card of this.hand) {
       if (Array.isArray(card.toValue())) {
         if (total === 0) {
-          if (this.hand.length === 2) {
-            return [this.hand[1].toValue() + 11, this.hand[1].toValue() + 1];
-          }
+          return [this.hand[1].toValue() + 11, this.hand[1].toValue() + 1];
         } else {
           if (total + 11 <= 21) {
             return [total + 11, total + 1];
@@ -124,5 +122,12 @@ let deck = new Deck();
 deck.shuffle();
 let player = new Player('grant');
 player.inital(deck);
-console.log(player.show());
+for (let item of player.show()) {
+  console.log(item.toEnglish());
+}
+console.log(player.toValue());
+player.hit(deck);
+for (let item of player.show()) {
+  console.log(item.toEnglish());
+}
 console.log(player.toValue());
